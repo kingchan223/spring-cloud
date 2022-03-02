@@ -2,9 +2,11 @@ package com.example.usermicroservice.jpa;
 
 import com.example.usermicroservice.dto.UserDto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name="users")
@@ -32,5 +34,4 @@ public class UserEntity {
         userEntity.setEncPwd("enc_"+userDto.getPwd());
         return userEntity;
     }
-
 }

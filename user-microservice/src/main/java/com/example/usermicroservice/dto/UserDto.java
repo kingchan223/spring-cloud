@@ -1,9 +1,13 @@
 package com.example.usermicroservice.dto;
 
+import com.example.usermicroservice.vo.ResponseOrder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
+@NoArgsConstructor
 @Data
 public class UserDto {
     private String email;
@@ -12,10 +16,5 @@ public class UserDto {
     private String userId;
     private Date createdAt;
     private String encPwd;
-
-    public UserDto(String email, String name, String pwd) {
-        this.email = email;
-        this.name = name;
-        this.pwd = pwd;
-    }
+    private List<ResponseOrder> orders;
 }
