@@ -24,14 +24,13 @@ public class UserEntity {
     private String userId;
 
     @Column(nullable = false, unique=true)
-    private String encPwd;
+    private String encPassword;
 
     public static UserEntity create(UserDto userDto) {
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(userDto.getEmail());
         userEntity.setName(userDto.getName());
         userEntity.setUserId(userDto.getUserId());
-        userEntity.setEncPwd("enc_"+userDto.getPwd());
         return userEntity;
     }
 }

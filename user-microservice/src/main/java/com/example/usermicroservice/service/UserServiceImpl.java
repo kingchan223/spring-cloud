@@ -6,6 +6,9 @@ import com.example.usermicroservice.jpa.UserRepository;
 import com.example.usermicroservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +24,12 @@ public class UserServiceImpl implements UserService{
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public void createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
         UserEntity userEntity = UserEntity.create(userDto);
-        userEntity.setEncPwd(passwordEncoder.encode(userDto.getPwd()));
+        userEntity.setEncPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userEntity);
-        return new ModelMapper().map(userEntity, UserDto.class);
+        new ModelMapper().map(userEntity, UserDto.class);
     }
 
     @Override
@@ -41,5 +44,23 @@ public class UserServiceImpl implements UserService{
     @Override
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+        if(userEntity == null ) throw new UsernameNotFoundException("사용자가 존재하지 않습니다.");
+        return new User(userEntity.getEmail(), userEntity.getEncPassword(),
+                true,
+                true,
+                true,
+                true, new ArrayList<>());
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        return new ModelMapper().map(userEntity, UserDto.class);
     }
 }
