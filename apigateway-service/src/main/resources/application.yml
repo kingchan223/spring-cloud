@@ -9,7 +9,15 @@ eureka:
 spring:
   application:
     name: apigateway-service
+#  ---  actuator ---
+  config:
+    import: "optional:configserver:http://localhost:8888"
   cloud:
+    config:
+      name: ecommerce
+    profiles:
+      active: prod
+#   ---   end of actuator ---
     gateway:
       default-filters:
         - name: GlobalFilter
@@ -18,12 +26,6 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-#        - id: user-service
-#          uri: lb://USER-SERVICE
-#          predicates:
-#            - Path=/user-service/**
-#          filters:
-#            - CustomFilter
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -40,7 +42,6 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -56,26 +57,24 @@ spring:
             - Path=/catalog-service/**
           filters:
             - CustomFilter
-
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
           filters:
             - CustomFilter
-#        - id: second-service
-#          uri: lb://MY-SECOND-SERVICE
-#          predicates:
-#            - Path=/second-service/**
-#          filters:
-#            - name: CustomFilter
-#            - name: LoggingFilter
-#              args:
-#                baseMessage: Hi, Logging Filter
-#                preLogger: true
-#                postLogger: true
-
-
-token:
-  secret: user_token
-
+#         여기 추가
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET, POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#       여기까지 추가
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
