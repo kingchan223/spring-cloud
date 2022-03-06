@@ -9,6 +9,13 @@ eureka:
 spring:
   application:
     name: apigateway-service
+    #  RabbitMQ 구독
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  #  RabbitMQ 구독 END --
 #  ---  actuator ---
   config:
     import: "optional:configserver:http://localhost:8888"
@@ -16,7 +23,7 @@ spring:
     config:
       name: ecommerce
     profiles:
-      active: prod
+      active: default
 #   ---   end of actuator ---
     gateway:
       default-filters:
@@ -63,7 +70,6 @@ spring:
             - Path=/order-service/**
           filters:
             - CustomFilter
-#         여기 추가
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -72,9 +78,8 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-#       여기까지 추가
 management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace
+        include: refresh, health, beans, httptrace, busrefresh, busenv
