@@ -42,6 +42,12 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
+        System.out.println(String.format(
+                "It's working User-service on PORT %s", env.getProperty("local.server.port")
+                        +"\n , port(server.port)="+env.getProperty("server.port")
+                        +"\n , token secret="+env.getProperty("token.secret")
+                        +"\n , token expiration time="+env.getProperty("token.expiration_time")
+        ));
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
         userService.createUser(userDto);
         ResponseUser responseUser = new ResponseUser(userDto);
