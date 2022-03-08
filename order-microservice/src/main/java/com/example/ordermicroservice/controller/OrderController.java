@@ -28,18 +28,18 @@ public class OrderController {
         return String.format("It's working Order-service on PORT %s", env.getProperty("local.server.port"));
     }
 
-    @PostMapping("/{user_id}/orders")
-    public ResponseEntity<ResponseOrder> createOrder(@PathVariable String user_id, @RequestBody RequestOrder order) {
+    @PostMapping("/{userId}/orders")
+    public ResponseEntity<ResponseOrder> createOrder(@PathVariable String userId, @RequestBody RequestOrder order) {
         OrderDto orderDto = new ModelMapper().map(order, OrderDto.class);
-        orderDto.setUserId(user_id);
+        orderDto.setUserId(userId);
         OrderDto crOrderDto = orderService.createOrder(orderDto);
         ResponseOrder responseOrder = new ModelMapper().map(crOrderDto, ResponseOrder.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
-    @GetMapping("/{user_id}/orders")
-    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable String user_id) {
-        Iterable<OrderEntity> orderList = orderService.getOrdersByUserId(user_id);
+    @GetMapping("/{userId}/orders")
+    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable String userId) {
+        Iterable<OrderEntity> orderList = orderService.getOrdersByUserId(userId);
         List<ResponseOrder> result = new ArrayList<>();
         orderList.forEach(o -> {result.add(new ModelMapper().map(o, ResponseOrder.class));});
 
