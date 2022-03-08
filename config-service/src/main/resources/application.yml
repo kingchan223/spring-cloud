@@ -1,0 +1,33 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/kingchan223/spring-config-study.git
+#          username: [your github username]
+#          password: [your github password] #Private repository인 경우에 필요함
+
+#  RabbitMQ 구독
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+#  RabbitMQ 구독 END --
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace, busrefresh, busenv
+
+encrypt:
+#  key: abcdefghijklmnop01234567 #encryption, decryption 할 때 사용되는 key
+  key-store:
+    location: file://${user.home}/Downloads/Work/keystore/apiEncryptionKey.jks
+    password: test1234
+    alias: apiEncryptionKey

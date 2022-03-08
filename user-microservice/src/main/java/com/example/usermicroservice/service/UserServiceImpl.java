@@ -54,17 +54,20 @@ public class UserServiceImpl implements UserService{
 //        ResponseEntity<List<ResponseOrder>> orderListResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
 //                new ParameterizedTypeReference<>() {});
 //        List<ResponseOrder> orderList = orderListResponse.getBody();
-        /*Using Feign Client*/
-        /*Feign Exception Handling*/
-        List<ResponseOrder> orderList = null;
-        try{
-            orderList = orderServiceClient.getOrders(userId);
-        }catch(FeignException ex){
-            log.error(ex.getMessage());
-        }
+//        /*Using Feign Client*/
+//        /*Feign Exception Handling*/
+//        List<ResponseOrder> orderList = null;
+//        try{
+//            orderList = orderServiceClient.getOrders(userId);
+//        }catch(FeignException ex){
+//            log.error(ex.getMessage());
+//        }
+        /* ErrorDecoder */
+        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
         userDto.setOrders(orderList);
         return userDto;
     }
+
 
     @Override
     public Iterable<UserEntity> getUserByAll() {
