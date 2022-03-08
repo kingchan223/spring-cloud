@@ -10,6 +10,6 @@ import java.util.List;
 @FeignClient(name="order-service")//application name
 public interface OrderServiceClient {
 
-    @GetMapping("/order-service/{userId}/orders")
+    @GetMapping("/order-service/{userId}/orders_ng")//고의적으로 잘못된 주소 order_ng사용
     List<ResponseOrder>  getOrders(@PathVariable String userId);
 }
