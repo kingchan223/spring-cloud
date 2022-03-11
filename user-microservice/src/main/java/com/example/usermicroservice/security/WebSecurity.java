@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.servlet.Filter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -23,7 +22,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     @Override//Authorization
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable();
-//        http.authorizeRequests().antMatchers("/users/**").permitAll();
+        http.authorizeRequests().antMatchers("/users/**").permitAll();
+        http.headers().frameOptions().disable(); //h2 web console 열어주기
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
                 .hasIpAddress("192.168.219.103")

@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // End of Spring cloud config
     // Start of RabbitMQ
-    implementation "org.springframework.cloud:spring-cloud-starter-bus-amqp"
+//    implementation "org.springframework.cloud:spring-cloud-starter-bus-amqp"
     // End of RabbitMQ
 
     compileOnly 'org.springframework.cloud:spring-cloud-starter-openfeign'// Feign Client
@@ -48,6 +48,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     runtimeOnly 'com.h2database:h2'
 }
 
